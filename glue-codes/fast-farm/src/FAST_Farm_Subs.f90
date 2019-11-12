@@ -167,7 +167,7 @@ SUBROUTINE Farm_Initialize( farm, InputFile, ErrStat, ErrMsg )
    IF (LEN_TRIM(InputFile) == 0) THEN ! no input file was specified
       CALL SetErrStat( ErrID_Fatal, 'The required input file was not specified on the command line.', ErrStat, ErrMsg, RoutineName )
 
-      CALL NWTC_DisplaySyntax( InputFile, 'FAST.Farm.exe' )
+      CALL NWTC_DisplaySyntax( InputFile, 'FAST.Farm.exe' )  ! display "FAST.FARM.exe [/h] <InputFile>... " --Bing
          
       RETURN
    END IF            
@@ -208,8 +208,9 @@ SUBROUTINE Farm_Initialize( farm, InputFile, ErrStat, ErrMsg )
    
    farm%p%NOutTurb = min(farm%p%NumTurbines,9)  ! We only support output for the first 9 turbines, even if the farm has more than 9 
    
-   farm%p%n_high_low = NINT( farm%p%dt / farm%p%dt_high )
-            
+   farm%p%n_high_low = NINT( farm%p%dt / farm%p%dt_high ) !dt is the time step for low-resolution wind data inputfile, will be used as the global time step; !dt_high is the high resolution time step.
+         !n_high_low is the number of high-resolution time step per low-resolution time step.   
+   
          ! let's make sure the FAST DT is an exact integer divisor of dt_high 
          ! (i'm doing this outside of Farm_ValidateInput so we know that dt/=0 before computing n_high_low):
       IF ( .NOT. EqualRealNos( real(farm%p%DT,SiKi), real(farm%p%DT_high,SiKi) * farm%p%n_high_low )  ) THEN

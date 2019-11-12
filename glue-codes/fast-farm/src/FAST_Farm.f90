@@ -150,7 +150,7 @@ type(All_FastFarm_Data)               :: farm
    call FARM_End(farm, ErrStat, ErrMsg)
    
    CALL RunTimes( ProgStrtTime, ProgStrtCPU, SimStrtTime, SimStrtCPU, t )   
-   call NormStop()
+   CALL NormStop()
    
 CONTAINS
    !...............................................................................................................................
